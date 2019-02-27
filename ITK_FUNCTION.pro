@@ -4,7 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    itkImageTrim2DFunction.cpp
 
 CONFIG(win32, win32|macx){
     INCLUDEPATH += F:\PROJECTS\INCLUDE_FUNCTIONS
@@ -956,4 +957,7 @@ CONFIG(win32, win32|macx){
     -lITKzlib-4.13.1 \
     -lITKzlib-4.13
 }
+
+HEADERS += \
+    itkImageTrim2DFunction.h
 

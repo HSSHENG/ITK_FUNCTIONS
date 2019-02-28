@@ -134,8 +134,8 @@ void itk::QuickView3DFunction(
     imageData->GetSpacing(spacing);
     imageData->GetExtent(extent);
     cent[0] = origin[0] + (extent[1]-extent[0])*spacing[0]/2.0;
-    cent[1] = origin[1] + (extent[3]-extent[2])*spacing[2]/2.0;
-    cent[2] = origin[2] + (extent[5]-extent[4])*spacing[3]/2.0;
+    cent[1] = origin[1] + (extent[3]-extent[2])*spacing[1]/2.0;
+    cent[2] = origin[2] + (extent[5]-extent[4])*spacing[2]/2.0;
 
     ren->SetBackground(.2, .3, .4);
     ren->GetActiveCamera()->SetFocalPoint(cent[0],cent[1],cent[2]);
@@ -284,8 +284,8 @@ void itk::QuickView3DFunction(
     imageData->GetSpacing(spacing);
     imageData->GetExtent(extent);
     cent[0] = origin[0] + (extent[1]-extent[0])*spacing[0]/2.0;
-    cent[1] = origin[1] + (extent[3]-extent[2])*spacing[2]/2.0;
-    cent[2] = origin[2] + (extent[5]-extent[4])*spacing[3]/2.0;
+    cent[1] = origin[1] + (extent[3]-extent[2])*spacing[1]/2.0;
+    cent[2] = origin[2] + (extent[5]-extent[4])*spacing[2]/2.0;
 
     ren->SetBackground(.2, .3, .4);
     ren->GetActiveCamera()->SetFocalPoint(cent[0],cent[1],cent[2]);
@@ -434,8 +434,8 @@ void itk::QuickView3DFunction(
     imageData->GetSpacing(spacing);
     imageData->GetExtent(extent);
     cent[0] = origin[0] + (extent[1]-extent[0])*spacing[0]/2.0;
-    cent[1] = origin[1] + (extent[3]-extent[2])*spacing[2]/2.0;
-    cent[2] = origin[2] + (extent[5]-extent[4])*spacing[3]/2.0;
+    cent[1] = origin[1] + (extent[3]-extent[2])*spacing[1]/2.0;
+    cent[2] = origin[2] + (extent[5]-extent[4])*spacing[2]/2.0;
 
     ren->SetBackground(.2, .3, .4);
     ren->GetActiveCamera()->SetFocalPoint(cent[0],cent[1],cent[2]);

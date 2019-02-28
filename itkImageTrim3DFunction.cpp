@@ -1,4 +1,4 @@
-#include "itkImageTrim2DFunction.h"
+#include "itkImageTrim3DFunction.h"
 
 //.................................................................................................
 // by     Dr. HSSHENG
@@ -6,17 +6,17 @@
 //.................................................................................................
 
 //.................................................................................................
-// TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 2D ITK IMAGE (UNSIGNED CHAR)
+// TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 3D ITK IMAGE (UNSIGNED CHAR)
 //.................................................................................................
-// image: ITK 2D Image
+// image: ITK 3D Image
 // flag:  If all blank Image (>0) return false or return true
 //.................................................................................................
-void itk::ImageTrim2DFunction(
-        itk::Image<unsigned char,2>::Pointer &image,
+void itk::ImageTrim3DFunction(
+        itk::Image<unsigned char,3>::Pointer &image,
         bool flag)
 {
     // typedef
-    using ImageType = itk::Image<unsigned char,2>;
+    using ImageType = itk::Image<unsigned char,3>;
     using IteratorType = itk::ImageRegionIterator<ImageType>;
 
     // image size and initial trim size
@@ -24,11 +24,13 @@ void itk::ImageTrim2DFunction(
     ImageType::SpacingType spacing = image->GetSpacing();
     ImageType::SizeType size = image->GetLargestPossibleRegion().GetSize();
     ImageType::IndexType start = image->GetLargestPossibleRegion().GetIndex();
-    int trimSize[4];
+    int trimSize[6];
     trimSize[0] = size[0]+start[0];
     trimSize[1] = start[0];
     trimSize[2] = size[1]+start[1];
     trimSize[3] = start[1];
+    trimSize[4] = size[2]+start[2];
+    trimSize[5] = start[2];
 
     // iterator of the whole image
     IteratorType iterator(image, image->GetLargestPossibleRegion());
@@ -43,11 +45,13 @@ void itk::ImageTrim2DFunction(
             trimSize[1] = index[0]>trimSize[1]?index[0]:trimSize[1];
             trimSize[2] = index[1]<trimSize[2]?index[1]:trimSize[2];
             trimSize[3] = index[1]>trimSize[3]?index[1]:trimSize[3];
+            trimSize[4] = index[2]<trimSize[4]?index[2]:trimSize[4];
+            trimSize[5] = index[2]>trimSize[5]?index[2]:trimSize[5];
         }
 
         ++iterator;
     }
-    if(trimSize[0]>trimSize[1] ||trimSize[2]>trimSize[3])
+    if(trimSize[0]>trimSize[1] || trimSize[2]>trimSize[3] || trimSize[4]>trimSize[5])
     {
         flag = false;
         return;
@@ -58,11 +62,13 @@ void itk::ImageTrim2DFunction(
     ImageType::PointType orignTrim;
     orignTrim[0] = origin[0] + (trimSize[0]-1)*spacing[0];
     orignTrim[1] = origin[1] + (trimSize[2]-1)*spacing[1];
+    orignTrim[2] = origin[2] + (trimSize[4]-1)*spacing[2];
     ImageType::IndexType startTrim;
     startTrim.Fill(0);
     ImageType::SizeType sizeTrim;
     sizeTrim[0] = trimSize[1] - trimSize[0] + 3;
     sizeTrim[1] = trimSize[3] - trimSize[2] + 3;
+    sizeTrim[2] = trimSize[5] - trimSize[4] + 3;
 
     // resample
     using ResampleType = itk::ResampleImageFilter<ImageType,ImageType>;
@@ -88,17 +94,17 @@ void itk::ImageTrim2DFunction(
 }
 
 //.................................................................................................
-// TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 2D ITK IMAGE (SIGNED SHORT)
+// TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 3D ITK IMAGE (SIGNED SHORT)
 //.................................................................................................
-// image: ITK 2D Image
+// image: ITK 3D Image
 // flag:  If all blank Image (>-1000) return false or return true
 //.................................................................................................
-void itk::ImageTrim2DFunction(
-        itk::Image<short,2>::Pointer &image,
+void itk::ImageTrim3DFunction(
+        itk::Image<short,3>::Pointer &image,
         bool flag)
 {
     // typedef
-    using ImageType = itk::Image<short,2>;
+    using ImageType = itk::Image<short,3>;
     using IteratorType = itk::ImageRegionIterator<ImageType>;
 
     // image size and initial trim size
@@ -106,11 +112,13 @@ void itk::ImageTrim2DFunction(
     ImageType::SpacingType spacing = image->GetSpacing();
     ImageType::SizeType size = image->GetLargestPossibleRegion().GetSize();
     ImageType::IndexType start = image->GetLargestPossibleRegion().GetIndex();
-    int trimSize[4];
+    int trimSize[6];
     trimSize[0] = size[0]+start[0];
     trimSize[1] = start[0];
     trimSize[2] = size[1]+start[1];
     trimSize[3] = start[1];
+    trimSize[4] = size[2]+start[2];
+    trimSize[5] = start[2];
 
     // iterator of the whole image
     IteratorType iterator(image, image->GetLargestPossibleRegion());
@@ -119,17 +127,19 @@ void itk::ImageTrim2DFunction(
     {
         short value = iterator.Get();
         ImageType::IndexType index = iterator.GetIndex();
-        if(value>-1000)
+        if(value>0)
         {
             trimSize[0] = index[0]<trimSize[0]?index[0]:trimSize[0];
             trimSize[1] = index[0]>trimSize[1]?index[0]:trimSize[1];
             trimSize[2] = index[1]<trimSize[2]?index[1]:trimSize[2];
             trimSize[3] = index[1]>trimSize[3]?index[1]:trimSize[3];
+            trimSize[4] = index[2]<trimSize[4]?index[2]:trimSize[4];
+            trimSize[5] = index[2]>trimSize[5]?index[2]:trimSize[5];
         }
 
         ++iterator;
     }
-    if(trimSize[0]>trimSize[1] ||trimSize[2]>trimSize[3])
+    if(trimSize[0]>trimSize[1] || trimSize[2]>trimSize[3] || trimSize[4]>trimSize[5])
     {
         flag = false;
         return;
@@ -140,11 +150,13 @@ void itk::ImageTrim2DFunction(
     ImageType::PointType orignTrim;
     orignTrim[0] = origin[0] + (trimSize[0]-1)*spacing[0];
     orignTrim[1] = origin[1] + (trimSize[2]-1)*spacing[1];
+    orignTrim[2] = origin[2] + (trimSize[4]-1)*spacing[2];
     ImageType::IndexType startTrim;
     startTrim.Fill(0);
     ImageType::SizeType sizeTrim;
     sizeTrim[0] = trimSize[1] - trimSize[0] + 3;
     sizeTrim[1] = trimSize[3] - trimSize[2] + 3;
+    sizeTrim[2] = trimSize[5] - trimSize[4] + 3;
 
     // resample
     using ResampleType = itk::ResampleImageFilter<ImageType,ImageType>;

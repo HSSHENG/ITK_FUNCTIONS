@@ -5,7 +5,12 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-    itkImageTrim2DFunction.cpp
+    itkImageTrim2DFunction.cpp \
+    itkImageTrim3DFunction.cpp \
+    itkDICOMSeriesSimpleReaderFunction.cpp \
+    itkImageDataRegularization3DFunction.cpp \
+    itkQuickView3DFunction.cpp \
+    itkQuickView2DFunction.cpp
 
 CONFIG(win32, win32|macx){
     INCLUDEPATH += F:\PROJECTS\INCLUDE_FUNCTIONS
@@ -959,5 +964,10 @@ CONFIG(win32, win32|macx){
 }
 
 HEADERS += \
-    itkImageTrim2DFunction.h
+    itkImageTrim2DFunction.h \
+    itkImageTrim3DFunction.h \
+    itkDICOMSeriesSimpleReaderFunction.h \
+    itkImageDataRegularization3DFunction.h \
+    itkQuickView3DFunction.h \
+    itkQuickView2DFunction.h
 

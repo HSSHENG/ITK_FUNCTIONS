@@ -8,23 +8,23 @@
 namespace itk
 {
     //.................................................................................................
-    // TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 2D ITK IMAGE (UNSIGNED CHAR)
+    // TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 3D ITK IMAGE (UNSIGNED CHAR)
     //.................................................................................................
-    // image: ITK 2D Image
+    // image: ITK 3D Image
     // flag:  If all blank Image (>0) return false or return true
     //.................................................................................................
-    void ImageTrim2DFunction(
-            itk::Image<unsigned char,2>::Pointer &image,
+    void ImageTrim3DFunction(
+            itk::Image<unsigned char,3>::Pointer &image,
             bool flag);
 
     //.................................................................................................
-    // TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 2D ITK IMAGE (SIGNED SHORT)
+    // TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 3D ITK IMAGE (SIGNED SHORT)
     //.................................................................................................
-    // image: ITK 2D Image
+    // image: ITK 3D Image
     // flag:  If all blank Image (>-1000) return false or return true
     //.................................................................................................
-    void ImageTrim2DFunction(
-            itk::Image<short,2>::Pointer &image,
+    void ImageTrim3DFunction(
+            itk::Image<short,3>::Pointer &image,
             bool flag);
 }
 

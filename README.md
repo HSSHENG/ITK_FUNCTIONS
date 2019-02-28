@@ -1,10 +1,10 @@
-Project: 		      ITK_FUNCTIONS : Some useful itk function for medical image processing
+Project: 		ITK_FUNCTIONS : Some useful itk function for medical image processing
 
-Developer:    		Huashan SHENG
+Developer:    	Huashan SHENG
 
 Time: 	      		Feb 2019
 
 Source Code based on: [1] ITK
-       	    	        [2] VTK
+       	    	 [2] VTK
                       [3] Eigen
 

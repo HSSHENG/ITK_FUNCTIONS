@@ -473,7 +473,7 @@ void itk::QuickView3DFunction(
     typedef itk::Image<unsigned char,3> ImageType3dC;
 
     // regulization
-    itk::ImageDataRegulization3DFunction(image);
+    itk::ImageDataRegularization3DFunction(image);
 
     // convert to vtk image
     typedef itk::ImageToVTKImageFilter<ImageType3dC> ImageToVTKImageFilterType;

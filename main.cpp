@@ -1,4 +1,5 @@
 #include "itkImageTrim2DFunction.h"
+#include "itkImageExpand2DFunction.h"
 #include "itkQuickView2DFunction.h"
 #include <itkImage.h>
 #include <itkImageFileReader.h>
@@ -23,6 +24,10 @@ int main()
     // trim
     bool trimedOrNot = true;
     itk::ImageTrim2DFunction(image, trimedOrNot);
+
+    itk::QuickView2DFunction(image);
+
+    itk::ImageExpand2DFunction(image, 1);
 
     itk::QuickView2DFunction(image);
 }

@@ -26,6 +26,16 @@ namespace itk
     void ImageTrim3DFunction(
             itk::Image<short,3>::Pointer &image,
             bool flag);
+
+    //.................................................................................................
+    // TRIM THE WHITE (DEFAULT VALUE 0) BOUNDARY OF A 3D ITK IMAGE (FLOAT)
+    //.................................................................................................
+    // image: ITK 3D Image
+    // flag:  If all blank Image (>-1000) return false or return true
+    //.................................................................................................
+    void ImageTrim3DFunction(
+            itk::Image<float,3>::Pointer &image,
+            bool flag);
 }
 
 #endif // ITKIMAGETRIM2DFUNCTION_H

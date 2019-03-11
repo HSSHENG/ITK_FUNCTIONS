@@ -27,6 +27,12 @@
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkCamera.h>
 #include <vtkAutoInit.h>
+
+#include <vtkMarchingCubes.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkLODActor.h>
+#include <vtkProperty.h>
+#include <vtkPolyDataNormals.h>
 VTK_MODULE_INIT(vtkRenderingFreeType);
 VTK_MODULE_INIT(vtkRenderingOpenGL2);
 VTK_MODULE_INIT(vtkInteractionStyle);
@@ -51,6 +57,13 @@ namespace itk
     void QuickView3DFunction(
             itk::Image<float,3>::Pointer image);
 
+    //.................................................................................................
+    // A VTK-ITK FUNCTION FOR 3D ITK IMAGE DATA QUICK VIEW unsigned char surface rendering
+    // flag: 0 for volume rendering, 1 for surface rendering
+    //.................................................................................................
+    void QuickView3DFunction(
+            itk::Image<unsigned char,3>::Pointer image,
+            int flag);
 }
 
 #endif // ITKQUICKVIEW3DFUNCTION_H

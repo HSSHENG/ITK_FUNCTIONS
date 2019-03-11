@@ -453,3 +453,103 @@ void itk::QuickView3DFunction(
     iren->Initialize();
     iren->Start();
 }
+
+
+//.................................................................................................
+// A VTK-ITK FUNCTION FOR 3D ITK IMAGE DATA QUICK VIEW unsigned char surface rendering
+// flag: 0 for volume rendering, 1 for surface rendering
+//.................................................................................................
+void itk::QuickView3DFunction(
+        itk::Image<unsigned char,3>::Pointer image,
+        int flag)
+{
+    if (flag == 0)
+    {
+        itk::QuickView3DFunction(image);
+        return;
+    }
+
+    // typedef
+    typedef itk::Image<unsigned char,3> ImageType3dC;
+
+    // regulization
+    itk::ImageDataRegulization3DFunction(image);
+
+    // convert to vtk image
+    typedef itk::ImageToVTKImageFilter<ImageType3dC> ImageToVTKImageFilterType;
+    ImageToVTKImageFilterType::Pointer toVtkFilter = ImageToVTKImageFilterType::New();
+    toVtkFilter->SetInput(image);
+    try
+    {
+        toVtkFilter->Update();
+    }
+    catch(itk::ExceptionObject &ex)
+    {
+        std::cout<<ex<<std::endl;
+        return;
+    }
+    vtkSmartPointer<vtkImageData> imageData = toVtkFilter->GetOutput();
+
+    // Visualize
+
+    // marching cubes
+    vtkSmartPointer<vtkMarchingCubes> contourExtract = vtkSmartPointer<vtkMarchingCubes>::New();
+    contourExtract->SetInputData(imageData);
+    contourExtract->ComputeNormalsOn();
+    contourExtract->SetValue(0,127);
+
+    // normal
+    vtkSmartPointer<vtkPolyDataNormals> normals = vtkSmartPointer<vtkPolyDataNormals>::New();
+    normals->SetComputePointNormals(1);
+    normals->SetComputeCellNormals(0);
+    normals->SetAutoOrientNormals(1);
+    normals->SetSplitting(0);
+
+    // mapper
+    vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    mapper->SetInputConnection(contourExtract->GetOutputPort());
+    mapper->ScalarVisibilityOff();
+
+    // actor
+    vtkSmartPointer<vtkLODActor> actor = vtkSmartPointer<vtkLODActor>::New();
+    actor->SetNumberOfCloudPoints(10000000);
+    actor->SetMapper(mapper);
+    actor->GetProperty()->SetColor(0,0.9,0.8);
+    actor->GetProperty()->SetInterpolationToPhong();
+    actor->GetProperty()->SetDiffuse(0.9);
+    actor->GetProperty()->SetSpecular(0.8);
+    actor->GetProperty()->SetSpecularPower(100);
+
+    // renderer
+    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderer->SetBackground(0.9412,1.0000,1.0000);
+    renderer->AddActor(actor);
+
+    // renWin
+    vtkSmartPointer<vtkRenderWindow> renWin = vtkSmartPointer<vtkRenderWindow>::New();
+    renWin->AddRenderer(renderer);
+    renWin->SetSize(800,600);
+
+    // style
+    vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
+
+    // iren
+    vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+    iren->SetRenderWindow(renWin);
+    iren->SetInteractorStyle(style);
+
+    // axes
+    vtkSmartPointer<vtkAxesActor> axes =
+    vtkSmartPointer<vtkAxesActor>::New();
+    vtkSmartPointer<vtkOrientationMarkerWidget> axesWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+    axesWidget->SetOrientationMarker(axes);
+    axesWidget->SetViewport( 0.0, 0.0, 0.2, 0.2 );
+    axesWidget->SetInteractor(iren);
+    axesWidget->On();
+    axesWidget->SetInteractive(0);
+
+    renderer->ResetCamera();
+    iren->Initialize();
+    renWin->Render();
+    iren->Start();
+}
